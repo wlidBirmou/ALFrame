@@ -68,13 +68,13 @@ private static class CustomFrame extends ALFrame {
 
 When executing:
 
-`
+``` 
 public static void main(String[] args) {
-        String frame = "first%78%12547 Kg%04-20-17%16:13:19%211 int";
+    String frame = "first%78%12547 Kg%04-20-17%16:13:19%211 int";
 
         CustomFrame customFrame = new CustomFrame(frame, "%");
 
-        System.out.println(customFrame.getStringFromTocken("name"));
+        System.out.println(customFrame.getStringFromTocken("order"));
         System.out.println(customFrame.getBitSet("infoState"));        
         System.out.println(customFrame.getDoubleFromTocken("weigh"));
         System.out.println(customFrame.getDateFromTocken("date").toString("dd/MM/YYYY"));
@@ -82,7 +82,7 @@ public static void main(String[] args) {
         System.out.println(customFrame.getIntegerFromTocken("counter"));
 
     }
-`
+```
 
 The output will be: 
 `first
