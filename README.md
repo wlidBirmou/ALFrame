@@ -1,30 +1,25 @@
 # ALFrame
-An easy to use API permitting generating a java object representing  frame pattern  received through a network or from another source
+Permit converting a raw frame received through a network, into a Java Object.
+
 ### Example 1: 
 `String frame="first%78%12547 Kg%04-20-17%16:13:19%211 int"`
 
-The frame can be composed of differents tockens representing information, each tocken is delimited from the other one by a delimiter.
+The received frame is composed of differents tockens representing information, each tocken is delimited from the other one by a delimiter.
 In the example 1: 
 - "%" represente the delimiter
 - tockens are:  "first", "78", "12547", "04-20-17", "16:13:19", "211 int"
-tockens can have various of type: Integer, Double, String, date, time, BitSet 
+- tockens can have various of type: Integer, Double, String, date, time, BitSet 
 
-
-Here is an example of how convert the frame to a Java object with ALFrame API:
-
-Here are the few steps to convert any received frame that follow one
-
-1. We begin by creating a class that extends the abstract class `ALFrame` 
-
+Here are the four steps to follow, in order to convert any received frame into Java object
+1. Create class that extends the abstract class `ALFrame` 
 `class CustromFrame extends ALFrame`
-
-2. We have to override the abstract method:
+2.Override the abstract method:
 
 `protected void parseFrame(String[] tockensArray)`
 
-Where the parameter `tockensArray` represente all the tockens, indexed in the same order they appear in the frame
+Where the parameter `tockensArray` represente all the frame tockens, indexed in the same order that they appear in the frame
 
-3. Inside the `parseFrame` method, we match each tocken with his associated class
+3. Inside the `parseFrame` method, we match each tocken with his ALFrame API associated class:
 - `StringFrameTocken` for a `String`.
 - `IntegerFrameTocken` for an `Integer`.
 - `DoubleFrameTocken` for a `Double`.
@@ -34,7 +29,6 @@ Where the parameter `tockensArray` represente all the tockens, indexed in the sa
 
 4. associate the tocken with a key through the method:
 `addTocken(FrameTocken frame,String key)` 
-of ALFrame class
 
 ### Example
 ```
@@ -47,12 +41,10 @@ private static class CustomFrame extends ALFrame {
         protected void parseFrame(String[] tockensArray) {
 
             StringFrameTocken stringFrameTocken = new StringFrameTocken(tockensArray[0]);
-            this.addTocken(stringFrameTocken, "name");
+            //the tocken in index 0 is a string, we associate this tocken with a key: "order"
+            this.addTocken(stringFrameTocken, "order"); 
 
-            BitSetFrameTocken bitSetFrameTocken = new BitSetFrameTocken(tockensArray[1], BitSetFrameTocken.Type.HEXA);
-            bitSetFrameTocken.putbitSetKey("state1", 0);
-            bitSetFrameTocken.putbitSetKey("state2", 2);
-            this.addTocken(bitSetFrameTocken, "infoState");
+            
 
             DoubleFrameTocken doubleFrameTocken = new DoubleFrameTocken(tockensArray[2]);
             this.addTocken(doubleFrameTocken, "weigh");
@@ -65,7 +57,11 @@ private static class CustomFrame extends ALFrame {
 
             IntegerFrameTocken integerFrameTocken=new IntegerFrameTocken(tockensArray[5]);
             this.addTocken(integerFrameTocken, "counter");
-
+            
+            BitSetFrameTocken bitSetFrameTocken = new BitSetFrameTocken(tockensArray[1], BitSetFrameTocken.Type.HEXA);
+            bitSetFrameTocken.putbitSetKey("state1", 0);
+            bitSetFrameTocken.putbitSetKey("state2", 2);
+            this.addTocken(bitSetFrameTocken, "infoState");
         }
     }
 ```
@@ -74,7 +70,6 @@ When executing:
 
 `
 public static void main(String[] args) {
-
         String frame = "first%78%12547 Kg%04-20-17%16:13:19%211 int";
 
         CustomFrame customFrame = new CustomFrame(frame, "%");
@@ -90,8 +85,7 @@ public static void main(String[] args) {
 `
 
 The output will be: 
-`
-first
+`first
 {1, 2, 3, 4}
 true
 12547.0
