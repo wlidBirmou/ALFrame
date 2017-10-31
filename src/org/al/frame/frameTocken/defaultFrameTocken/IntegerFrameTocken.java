@@ -6,6 +6,7 @@
 package org.al.frame.frameTocken.defaultFrameTocken;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,7 +20,7 @@ public class IntegerFrameTocken extends DefaultFrameTocken implements Serializab
 
     public IntegerFrameTocken(String integerFrameTocken) throws NumberFormatException {
         super();
-        this.setFrameTockenString(frameTockenString);
+        this.setFrameTockenString(integerFrameTocken);
 
     }
     
@@ -32,8 +33,10 @@ public class IntegerFrameTocken extends DefaultFrameTocken implements Serializab
     @Override
     public void setFrameTockenString(String tockenString) throws NumberFormatException {
         if (!tockenString.equals("")) {
-            Pattern pattern=Pattern.compile("\\d++");
-            this.integerValue = Integer.parseInt(pattern.matcher(tockenString).group());
+            Pattern pattern=Pattern.compile("[0-9]++");
+            Matcher matcher=pattern.matcher(tockenString);
+            matcher.find();
+            this.integerValue = Integer.parseInt(matcher.group());
             this.frameTockenString = tockenString;
         } else {
             integerValue = null;

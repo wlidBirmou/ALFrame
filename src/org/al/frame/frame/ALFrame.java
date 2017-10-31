@@ -13,6 +13,7 @@ import java.util.HashMap;
 import org.al.frame.frameTocken.defaultFrameTocken.BitSetFrameTocken;
 import org.al.frame.frameTocken.defaultFrameTocken.DateFrameTocken;
 import org.al.frame.frameTocken.defaultFrameTocken.DoubleFrameTocken;
+import org.al.frame.frameTocken.defaultFrameTocken.IntegerFrameTocken;
 import org.al.frame.frameTocken.defaultFrameTocken.StringFrameTocken;
 import org.al.frame.frameTocken.defaultFrameTocken.TimeFrameTocken;
 import org.al.frame.frameTocken.defaultFrameTocken.defaultFrameTockenException.IrregularKeyException;
@@ -111,6 +112,19 @@ public abstract class ALFrame implements Serializable {
         if (frameTocken != null) {
             if (frameTocken instanceof BitSetFrameTocken) {
                 return (BitSet) frameTocken.getFrameTockenValue();
+            } else {
+                throw new IrregularKeyException();
+            }
+        } else {
+            throw new InexistantKeyException();
+        }
+    }
+
+    public final Integer getIntegerFromTocken(String key) {
+        FrameTocken frameTocken = this.tockensHashMap.get(key);
+        if (frameTocken != null) {
+            if (frameTocken instanceof IntegerFrameTocken) {
+                return (Integer) frameTocken.getFrameTockenValue();
             } else {
                 throw new IrregularKeyException();
             }
